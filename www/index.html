@@ -82,11 +82,22 @@
                                     <text id="currentCountry"> Country </text>.
                                 </h2>
                             </div>
+                            <button onclick="getLocation()"> Show Map </button>
+                            <div id="coordinates">
+                                Latitude : <text id="latitude"> latitude </text> </br>
+                                Longitude : <text id="longitude"> longitude </text> 
+                            </div>
+                            <div id="map">
+                                MAP
+                            </div>
+
+                            <button id="test" onclick="currencyConvert()">test</button>
+                            <output id="test2">Test 2</output>
 
                             <div id="links">
                                 <!-- Link to another page -->
                                 <a href="currencyCoverter.html" onclick="openCageApi()">Convert Currency</a> </br>
-                                <a href="weather.html">Weather</a> </br>
+                                <a href="weather.html" onclick="weatherApi()">Weather</a> </br>
                                 <a href="about.html">About TravelPal</a>
                             </div>
 
@@ -109,6 +120,7 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
     <script type="text/javascript" src="js/my-app.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApFPNQ2WxbEueUXMJBPHjLenlPnFo68ls&callback=initMap"></script>
 </body>
 
 </html>

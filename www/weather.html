@@ -17,18 +17,28 @@
     <div data-page="about" class="page">
         <div class="page-content">
             <div class="content-block">
-                <button onclick="weatherApi()">weather</button>
-                <h3>Your location is <text id="localCity"> <i>City</i> </text></h3>
+                <!-- <button onclick="weatherApi()">weather</button> -->
+                <h3> Weather in <b><text id="localCity"> <i>City</i> </text>.</b></h3>
                 <div id="weatherInfo">
-                    <div id="weatherImg">
-                        <img src="">
-                    </div>
-                    <div id="currentTemp"> Current Temp </div> </br>
-
-                    <div id="weatherInfo"> Weather </div>
-                    <!-- <div id="cloud"> Clouds: <text id="cloudPercent"> Cloud </text></div>
-                    <div id="humidity"> Humidity: <text id="humidPercent"> Humidity </text> </div>
-                    <div id="wind"> Wind: <text id="windPressure"> Wind: </text></div> -->
+                    <table>
+                        <tr>
+                            <td>
+                                <div id="weatherImg">
+                                    <img src=""> Image
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <text id="currentTemp"> Current Temp </text> <text id="degreeTemp"> °C </text>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <!-- <div id="weatherInfo"> Weather </div> -->
+                    <div id="cloud"> Clouds: <text id="cloudPercent"> Cloud </text> %</div>
+                    <div id="humidity"> Humidity: <text id="humidPercent"> Humidity </text> % </div>
+                    <div id="wind"> Wind: <text id="windSpeed"> Wind </text> meter/sec </div>
                 </div>
             </div>
         </div>

@@ -13,3 +13,25 @@
 .statusbar-overlay {
     background: #000000;
 }
+
+#localCity {
+    font-size: 1.5em;
+}
+#currentTemp {
+    font-size: 3em;
+    font-weight: bold;
+}
+
+#degreeTemp {
+    font-size: 2.8em;
+    font-weight: lighter;
+}
+
+#cloudPercent, #humidPercent, #windSpeed {
+    font-size: 20px;
+}
+
+#map {
+  height: 400px;
+  width: 200px;
+}

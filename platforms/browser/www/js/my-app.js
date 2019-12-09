@@ -42,71 +42,131 @@ $$(document).on('deviceready', function() {
 //     myApp.alert('Here comes About page');
 // })
 
+function onError(){
+    console.log(Error);
+}
+
+//Function for MAP
+function getLocation(){
+    navigator.geolocation.getCurrentPosition(geoCallback, onError);
+}
+
+function geoCallback(position) {
+    //console.log(position.coords.latitude);
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+
+    //var coordDisplay = "Latitude: " + lat + " Longitude: " + lng;
+    document.getElementById('latitude').innerHTML = lat;
+    document.getElementById('longitude').innerHTML = lng;
+    updateMap(lat, lng);
+    //openCageApi(lat, lng);
+    var globalLat = position.coords.latitude;
+    var globalLng = position.coords.longitude;
+
+}
+
+var globalLat; // creating GLOBAL Variable for OpenCageAPI()
+var globalLng;
+
+function initMap() {
+    var currentLocation = coordDisplay;
+    var map = new
+                google.maps.Map (document.getElementById('map'),
+                { zoom: 15, 
+                    center: currentLocation
+                });
+    var marker = new google.maps.Marker ({
+                    position: currentLocation,
+                     map: map
+                });          
+}
+
+function updateMap(latitude, longitude) {
+    var currentLocation = {lat: latitude, lng: longitude};
+    var map = new google.maps.Map(document.getElementById('map'),
+                { zoom: 15,
+                    center: currentLocation
+                });
+    var marker = new google.maps.Marker({
+                    position: currentLocation,
+                    map: map
+                });
+}
+
+
 // Function to pull current city and country from phone's GPS
 function openCageApi() {
+    // var latitudeLocal = globalLat;
+    // var longitudeLocal = globalLng; 
+
     var http = new XMLHttpRequest();
-    const url = 'https://api.opencagedata.com/geocode/v1/json?q=53.346+-6.2588&key=f576d3fbe1d84392b909860a541915d0';
+    //var test = 'https://api.opencagedata.com/geocode/v1/json?q=53.3307169+-6.2737894&key=f576d3fbe1d84392b909860a541915d0'
+    var url = 'https://api.opencagedata.com/geocode/v1/json?q='
+                + globalLat + '+' + globalLng
+                + '&key=f576d3fbe1d84392b909860a541915d0';
     http.open("GET", url);
     http.send();
     
     http.onreadystatechange = (e) => {
         var response = http.responseText;
         var responseJSON = JSON.parse(response);
-        console.log(response);
-        console.log(responseJSON);
+         console.log(response);
+         console.log(responseJSON);
 
         
-        var city = responseJSON.results[0].components.city;
-        document.getElementById('currentCity').innerHTML = city;
-        var country = responseJSON.results[0].components.country;
-        document.getElementById('currentCountry').innerHTML = country;
+        var address = responseJSON.results[0].formatted;
+        document.getElementById('currentCity').innerHTML = address;
+        // var country = responseJSON.results[0].components.country;
+        // document.getElementById('currentCountry').innerHTML = country;
 
         // fetching local Currency
-        var localCurrency = responseJSON.results[0].annotations.currency.iso_code;
-        localCurrencyGlobal = localCurrency;
+        // var localCurrency = responseJSON.results[0].annotations.currency.iso_code;
+        // localCurrencyGlobal = localCurrency;
         //document.getElementById('currency').innerHTML = localCurrency;
 
     }
 }
 
-var localCurrencyGlobal = "";
+ var localCurrencyGlobal = "";
+  var localRate;
+// var convertAmount;
 
-// converting currency
 function currencyConvert(){
-    var http = new XMLHttpRequest();
-    console.log(localCurrencyGlobals);
-    const url = 'http://www.apilayer.net/api/live?access_key=2bd7991fcb1e37c5073e35fee8264bef&format=1';
-    http.open("GET", url);
-    http.send();
-    
-    http.onreadystatechange = (e) => {
-         var response = http.responseText;
-         var responseJSON = JSON.parse(response);
+	var http = new XMLHttpRequest();
+	//var url = 'http://www.apilayer.net/api/live?access_key=2bd7991fcb1e37c5073e35fee8264bef&format=1';
+  var urlUSD = 'https://api.exchangeratesapi.io/latest?base=USD';
+  
+	http.open("GET", urlUSD);
+	http.send();
 
-         document.getElementById('currency').innerHTML = localCurrencyGlobal;
-       
-          //var localCurrency = responseJSON.results[0].annotations.currency.iso_code;
-        // var cur = document.getElementById('currency');
-        // alert(cur);
-        //document.getElementById('localCurrency').innerHTML = localCurrency1;
-        // var currency = document.getElementById('currency').localCurrency;
-        // document.getElementById('test').innerHTML = test;
-        
-        // if (condition) {
-            
-        // } else {
-            
-        // }
-        //var dollar = document.getElementById('dollar');
-        // var euro = responseJSON.quotes.USDEUR;
-        // //var currency = dollar * euro;
-        // document.getElementById('posEuro').innerHTML = euro;
-        
+	http.onreadystatechange = (e) => {
+    //base
+	var response = http.responseText;
+    var responseJSON = JSON.parse(response);
+    console.log(response);
+    console.log(responseJSON);
+
+    //var baseCurrency = responseJSON.rates.USD;
+    var checkCurrency = responseJSON.rates;
+    //console.log(baseCurrency);
+    var count;
+    for (count in checkCurrency){
+       // console.log(count);
+        if (localCurrencyGlobal == count){
+            var localRate = checkCurrency.localCurrencyGlobal;
+            console.log(localRate);
+            document.getElementById('test2').innerHTML = localRate;
+        }
     }
+    
+	}
 }
 
-// Displaying Weather for current location
 
+
+
+// Displaying Weather for current location
 function weatherApi(){
     var http = new XMLHttpRequest();
     const url = 'https://api.openweathermap.org/data/2.5/weather?q=Dublin,ie&units=metric&appid=0b7741d49c0e09d34ed63448546843c6';
@@ -131,18 +191,24 @@ function weatherApi(){
         var localCity = responseJSON.name;
         document.getElementById('localCity').innerHTML = localCity;
 
-        var currentTemp = responseJSON.main.temp.toFixed(0);
-        document.getElementById('currentTemp').innerHTML = currentTemp;
+        var temperature = responseJSON.main.temp.toFixed(0);
+        document.getElementById('currentTemp').innerHTML = temperature;
 
-        var weather = "<table>";
-        //for (var i = 0; i < 3; i++){
-            weather = weather + "<tr><td> Clouds: </td><td>";
-            weather += responseJSON.clouds.all + "%";
-            weather += "</td></tr><tr><td> Humidity: </td><td>" + responseJSON.main.humidity + "%";
-            weather += "</td></tr><tr><td> Wind: </td><td>" + responseJSON.wind.speed + "m/s" + "</td></tr>";
-        //}
-        weather += "</table>"
-        document.getElementById('weatherInfo').innerHTML = weather;        
+        var cloud = responseJSON.clouds.all;
+        document.getElementById('cloudPercent').innerHTML = cloud;
+        var humid = responseJSON.main.humidity;
+        document.getElementById('humidPercent').innerHTML = humid;
+        var wind = responseJSON.wind.speed;
+        document.getElementById('windSpeed').innerHTML = wind;
+        
+        // USING TABLE IN HTML
+        // var weather = "<table>";
+        //     weather = weather + "<tr><td> Clouds: </td><td>";
+        //     weather += responseJSON.clouds.all + " %";
+        //     weather += "</td></tr><tr><td> Humidity: </td><td>" + responseJSON.main.humidity + " %";
+        //     weather += "</td></tr><tr><td> Wind: </td><td>" + responseJSON.wind.speed + " m/s" + "</td></tr>";
+        //     weather += "</table>"
+        // document.getElementById('weatherInfo').innerHTML = weather;        
     
     }
 }
