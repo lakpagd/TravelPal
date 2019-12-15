@@ -52,22 +52,11 @@ function getLocation(){
 }
 
 function geoCallback(position) {
-    //console.log(position.coords.latitude);
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
 
-    //var coordDisplay = "Latitude: " + lat + " Longitude: " + lng;
-    document.getElementById('latitude').innerHTML = lat;
-    document.getElementById('longitude').innerHTML = lng;
     updateMap(lat, lng);
-    //openCageApi(lat, lng);
-    // latGlobal = lat;
-    // lngGlobal = lng;
-
 }
-
-// var latGlobal; // creating GLOBAL Variable for OpenCageAPI()
-// var lngGlobal;
 
 function initMap() {
     var currentLocation = {lat:latitude, lng:longitude};
@@ -106,9 +95,13 @@ function getAddress(){
         var responseJSON = JSON.parse(response);
 
         var lat = responseJSON.lat;
-        latGlobal = lat;
+        document.getElementById('latitude').innerHTML = lat;
+            latGlobal = lat;
+        
         var lon = responseJSON.lon;
-        lonGlobal = lon;
+        document.getElementById('longitude').innerHTML = lng;
+            lonGlobal = lon;
+
         var city = responseJSON.city;
         cityGlobal = city;
         var countCode = responseJSON.countryCode.toLowerCase();
@@ -126,10 +119,7 @@ var currencyGlobal = "";
 
 // Displaying Weather for current location
 function weatherApi(){
-    //  var lat = latitude;
-    //  var lon = longitude;
-    //  console.log(lat);
-    //  console.log(lon);
+    
     var city = cityGlobal;
     var countryCode = countryCodeGlobal;
     var http = new XMLHttpRequest();
@@ -181,23 +171,36 @@ function weatherApi(){
 //     console.log(lng);
 // }
 
-// Function to pull current city and country from phone's GPS
-function openCageApi() {
-    // var lat = latGlobal;
-    // var lng = lngGlobal;
-    // console.log(lat);
-    // console.log(lng);
+function test(){
+    fetch('http://ip-api.com/json/?fields=lat,lon')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data){
+                // var lat = data.lat;
+                // var lon = data.lon;
+                openCageApi(data.lat, data.lon);
+            });
 
+}
+
+// Function to pull current city and country from phone's GPS
+function openCageApi(lat, lon) {    
+    
     var http = new XMLHttpRequest();
-    var test = 'https://api.opencagedata.com/geocode/v1/json?q=27.659604,85.343806&key=f576d3fbe1d84392b909860a541915d0'
+    //var test = 'https://api.opencagedata.com/geocode/v1/json?q=27.659604,85.343806&key=f576d3fbe1d84392b909860a541915d0'
+    // var test = 'https://api.opencagedata.com/geocode/v1/json?q='
+    //             + city + ',' + countryCode
+    //             + '&key=f576d3fbe1d84392b909860a541915d0'
+
     // var testCct='https://api.opencagedata.com/geocode/v1/json?q=' (53.3307169 -6.2737894)
     // + '53.269604' + '+' + '-9.057529'
     //         //    + '53.3458917' + '+' + '-6.258813'
     //            + '&key=f576d3fbe1d84392b909860a541915d0';
-    // var url = 'https://api.opencagedata.com/geocode/v1/json?q='
-    //             + lat + '+' + lng
-    //             + '&key=f576d3fbe1d84392b909860a541915d0';
-    http.open("GET", test);
+    var url = 'https://api.opencagedata.com/geocode/v1/json?q='
+                + lat + '+' + lon
+                + '&key=f576d3fbe1d84392b909860a541915d0';
+    http.open("GET", url);
     http.send();
     
     http.onreadystatechange = (e) => {
@@ -209,25 +212,9 @@ function openCageApi() {
         
         var address = responseJSON.results[0].formatted;
         document.getElementById('currentCity').innerHTML = address;
-        // var country = responseJSON.results[0].components.country;
-        // document.getElementById('currentCountry').innerHTML = country;
-
-        // fetching local Currency
-        var localCurrency = responseJSON.results[0].annotations.currency.iso_code;
-        localCurrencyGlobal = localCurrency;
-        //console.log(localCurrency);
-        //document.getElementById('currency').innerHTML = localCurrency;
-
-        // var city = responseJSON.results[0].components.city;
-        // cityGlobal = city;
-        // var countryCode = responseJSON.results[0].components.country_code;
-        // countryCodeGlobal = countryCode;
+        
     }
 }
-
-var localCurrencyGlobal = "";
-var localRate;
-// var convertAmount;
 
 function currencyConvert(){
 	var http = new XMLHttpRequest();
