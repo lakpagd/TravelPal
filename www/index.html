@@ -82,24 +82,19 @@
                                     <text id="currentCountry"> Country </text>.
                                 </h2>
                             </div>
+                            <button onclick="getAddress()">test</button>
+                            <button onclick="test()">test1</button>
+
                             <button onclick="getLocation()"> Show Map </button>
                             <div id="coordinates">
                                 Latitude : <text id="latitude"> latitude </text> </br>
-                                Longitude : <text id="longitude"> longitude </text> 
-                            </div>
-                            <div id="map">
-                                MAP
+                                Longitude : <text id="longitude"> longitude </text> </br>
+                                <!-- <input type="submit" value="Submit" onsubmit="return openCageApi()"> -->
                             </div>
 
-                            <button id="test" onclick="currencyConvert()">test</button>
-                            <output id="test2">Test 2</output>
+                            
 
-                            <div id="links">
-                                <!-- Link to another page -->
-                                <a href="currencyCoverter.html" onclick="openCageApi()">Convert Currency</a> </br>
-                                <a href="weather.html" onclick="weatherApi()">Weather</a> </br>
-                                <a href="about.html">About TravelPal</a>
-                            </div>
+                            <div id="map"></div>
 
                         </div>
                         
@@ -110,8 +105,13 @@
             <div class="toolbar">
                 <div class="toolbar-inner">
                     <!-- Toolbar links -->
-                    <a href="#" class="link">Link 1</a>
-                    <a href="#" class="link">Link 2</a>
+                    <a href="index.html">Home</a>
+                    <a href="currencyCoverter.html" onclick="openCageApi()">
+                        <!-- <img src="www\lib\framework7\img\money_euro_circle.svg"> -->
+                        Currency Converter
+                    </a>
+                    <a href="weather.html" onclick="weatherApi()">Weather</a> </br>
+                    <a href="about.html">About</a>
                 </div>
             </div>
         </div>

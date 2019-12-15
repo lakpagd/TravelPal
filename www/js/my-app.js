@@ -61,16 +61,16 @@ function geoCallback(position) {
     document.getElementById('longitude').innerHTML = lng;
     updateMap(lat, lng);
     //openCageApi(lat, lng);
-    var globalLat = position.coords.latitude;
-    var globalLng = position.coords.longitude;
+    // latGlobal = lat;
+    // lngGlobal = lng;
 
 }
 
-var globalLat; // creating GLOBAL Variable for OpenCageAPI()
-var globalLng;
+// var latGlobal; // creating GLOBAL Variable for OpenCageAPI()
+// var lngGlobal;
 
 function initMap() {
-    var currentLocation = coordDisplay;
+    var currentLocation = {lat:latitude, lng:longitude};
     var map = new
                 google.maps.Map (document.getElementById('map'),
                 { zoom: 15, 
@@ -94,82 +94,52 @@ function updateMap(latitude, longitude) {
                 });
 }
 
-
-// Function to pull current city and country from phone's GPS
-function openCageApi() {
-    // var latitudeLocal = globalLat;
-    // var longitudeLocal = globalLng; 
-
+function getAddress(){
     var http = new XMLHttpRequest();
-    //var test = 'https://api.opencagedata.com/geocode/v1/json?q=53.3307169+-6.2737894&key=f576d3fbe1d84392b909860a541915d0'
-    var url = 'https://api.opencagedata.com/geocode/v1/json?q='
-                + globalLat + '+' + globalLng
-                + '&key=f576d3fbe1d84392b909860a541915d0';
+    var url = 'http://ip-api.com/json/?fields=lat,lon,city,countryCode,currency'
+
     http.open("GET", url);
     http.send();
-    
+
     http.onreadystatechange = (e) => {
         var response = http.responseText;
         var responseJSON = JSON.parse(response);
-         console.log(response);
-         console.log(responseJSON);
 
-        
-        var address = responseJSON.results[0].formatted;
-        document.getElementById('currentCity').innerHTML = address;
-        // var country = responseJSON.results[0].components.country;
-        // document.getElementById('currentCountry').innerHTML = country;
-
-        // fetching local Currency
-        // var localCurrency = responseJSON.results[0].annotations.currency.iso_code;
-        // localCurrencyGlobal = localCurrency;
-        //document.getElementById('currency').innerHTML = localCurrency;
-
+        var lat = responseJSON.lat;
+        latGlobal = lat;
+        var lon = responseJSON.lon;
+        lonGlobal = lon;
+        var city = responseJSON.city;
+        cityGlobal = city;
+        var countCode = responseJSON.countryCode.toLowerCase();
+        countryCodeGlobal = countCode;
+        var currencyLocal = responseJSON.currency;
+        currencyGlobal = currencyLocal;
     }
 }
 
- var localCurrencyGlobal = "";
-  var localRate;
-// var convertAmount;
-
-function currencyConvert(){
-	var http = new XMLHttpRequest();
-	//var url = 'http://www.apilayer.net/api/live?access_key=2bd7991fcb1e37c5073e35fee8264bef&format=1';
-  var urlUSD = 'https://api.exchangeratesapi.io/latest?base=USD';
-  
-	http.open("GET", urlUSD);
-	http.send();
-
-	http.onreadystatechange = (e) => {
-    //base
-	var response = http.responseText;
-    var responseJSON = JSON.parse(response);
-    console.log(response);
-    console.log(responseJSON);
-
-    //var baseCurrency = responseJSON.rates.USD;
-    var checkCurrency = responseJSON.rates;
-    //console.log(baseCurrency);
-    var count;
-    for (count in checkCurrency){
-       // console.log(count);
-        if (localCurrencyGlobal == count){
-            var localRate = checkCurrency.localCurrencyGlobal;
-            console.log(localRate);
-            document.getElementById('test2').innerHTML = localRate;
-        }
-    }
-    
-	}
-}
-
-
-
+// var latGlobal = "";
+// var lonGlobal;
+var cityGlobal = "";
+var countryCodeGlobal = "";
+var currencyGlobal = "";
 
 // Displaying Weather for current location
 function weatherApi(){
+    //  var lat = latitude;
+    //  var lon = longitude;
+    //  console.log(lat);
+    //  console.log(lon);
+    var city = cityGlobal;
+    var countryCode = countryCodeGlobal;
     var http = new XMLHttpRequest();
-    const url = 'https://api.openweathermap.org/data/2.5/weather?q=Dublin,ie&units=metric&appid=0b7741d49c0e09d34ed63448546843c6';
+    // const url = 'https://api.openweathermap.org/data/2.5/weather?'
+    //             + 'lat=' + lat
+    //             + '&lon=' + lon
+    //             + '&units=metric&appid=0b7741d49c0e09d34ed63448546843c6';
+    var url = 'https://api.openweathermap.org/data/2.5/weather?q='
+                + city + ',' + countryCode
+                + '&units=metric&appid=0b7741d49c0e09d34ed63448546843c6';
     // const urlHtml is for fetching HTML format
     //const urlHtml = 'https://api.openweathermap.org/data/2.5/forecast/hourly?q=Dublin,ie&mode=html&units=metric&appid=0b7741d49c0e09d34ed63448546843c6';
     http.open("GET", url);
@@ -201,14 +171,89 @@ function weatherApi(){
         var wind = responseJSON.wind.speed;
         document.getElementById('windSpeed').innerHTML = wind;
         
-        // USING TABLE IN HTML
-        // var weather = "<table>";
-        //     weather = weather + "<tr><td> Clouds: </td><td>";
-        //     weather += responseJSON.clouds.all + " %";
-        //     weather += "</td></tr><tr><td> Humidity: </td><td>" + responseJSON.main.humidity + " %";
-        //     weather += "</td></tr><tr><td> Wind: </td><td>" + responseJSON.wind.speed + " m/s" + "</td></tr>";
-        //     weather += "</table>"
-        // document.getElementById('weatherInfo').innerHTML = weather;        
-    
     }
+}
+
+// function test(){
+//     var lat = latGlobal;
+//     var lng = lonGlobal;
+//     console.log(lat);
+//     console.log(lng);
+// }
+
+// Function to pull current city and country from phone's GPS
+function openCageApi() {
+    // var lat = latGlobal;
+    // var lng = lngGlobal;
+    // console.log(lat);
+    // console.log(lng);
+
+    var http = new XMLHttpRequest();
+    var test = 'https://api.opencagedata.com/geocode/v1/json?q=27.659604,85.343806&key=f576d3fbe1d84392b909860a541915d0'
+    // var testCct='https://api.opencagedata.com/geocode/v1/json?q=' (53.3307169 -6.2737894)
+    // + '53.269604' + '+' + '-9.057529'
+    //         //    + '53.3458917' + '+' + '-6.258813'
+    //            + '&key=f576d3fbe1d84392b909860a541915d0';
+    // var url = 'https://api.opencagedata.com/geocode/v1/json?q='
+    //             + lat + '+' + lng
+    //             + '&key=f576d3fbe1d84392b909860a541915d0';
+    http.open("GET", test);
+    http.send();
+    
+    http.onreadystatechange = (e) => {
+        var response = http.responseText;
+        var responseJSON = JSON.parse(response);
+        console.log(response);
+        console.log(responseJSON);
+
+        
+        var address = responseJSON.results[0].formatted;
+        document.getElementById('currentCity').innerHTML = address;
+        // var country = responseJSON.results[0].components.country;
+        // document.getElementById('currentCountry').innerHTML = country;
+
+        // fetching local Currency
+        var localCurrency = responseJSON.results[0].annotations.currency.iso_code;
+        localCurrencyGlobal = localCurrency;
+        //console.log(localCurrency);
+        //document.getElementById('currency').innerHTML = localCurrency;
+
+        // var city = responseJSON.results[0].components.city;
+        // cityGlobal = city;
+        // var countryCode = responseJSON.results[0].components.country_code;
+        // countryCodeGlobal = countryCode;
+    }
+}
+
+var localCurrencyGlobal = "";
+var localRate;
+// var convertAmount;
+
+function currencyConvert(){
+	var http = new XMLHttpRequest();
+	//var url = 'http://www.apilayer.net/api/live?access_key=2bd7991fcb1e37c5073e35fee8264bef&format=1';
+  var urlUSD = 'https://api.exchangeratesapi.io/latest?base=USD';
+  
+	http.open("GET", urlUSD);
+	http.send();
+
+	http.onreadystatechange = (e) => {
+        var response = http.responseText;
+        var responseJSON = JSON.parse(response);
+        console.log(response);
+        console.log(responseJSON);
+
+        var checkCurrency = responseJSON.rates;
+        //console.log(checkCurrency);
+        var count;
+        for (count in checkCurrency){
+            // console.log(count);
+            if (count == localCurrencyGlobal){
+                var localRate = responseJSON.rates.count;
+                console.log(localRate);
+                //document.getElementById('test2').innerHTML = localRate;
+            }
+        }
+    
+	}
 }
