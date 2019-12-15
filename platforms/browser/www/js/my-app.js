@@ -99,11 +99,12 @@ function getAddress(){
             latGlobal = lat;
         
         var lon = responseJSON.lon;
-        document.getElementById('longitude').innerHTML = lng;
+        document.getElementById('longitude').innerHTML = lon;
             lonGlobal = lon;
 
         var city = responseJSON.city;
         cityGlobal = city;
+        console.log(cityGlobal);
         var countCode = responseJSON.countryCode.toLowerCase();
         countryCodeGlobal = countCode;
         var currencyLocal = responseJSON.currency;
@@ -122,6 +123,7 @@ function weatherApi(){
     
     var city = cityGlobal;
     var countryCode = countryCodeGlobal;
+    console.log(city);
     var http = new XMLHttpRequest();
     // const url = 'https://api.openweathermap.org/data/2.5/weather?'
     //             + 'lat=' + lat
@@ -185,62 +187,62 @@ function test(){
 }
 
 // Function to pull current city and country from phone's GPS
-function openCageApi(lat, lon) {    
+// function openCageApi(lat, lon) {    
     
-    var http = new XMLHttpRequest();
-    //var test = 'https://api.opencagedata.com/geocode/v1/json?q=27.659604,85.343806&key=f576d3fbe1d84392b909860a541915d0'
-    // var test = 'https://api.opencagedata.com/geocode/v1/json?q='
-    //             + city + ',' + countryCode
-    //             + '&key=f576d3fbe1d84392b909860a541915d0'
+//     var http = new XMLHttpRequest();
+//     //var test = 'https://api.opencagedata.com/geocode/v1/json?q=27.659604,85.343806&key=f576d3fbe1d84392b909860a541915d0'
+//     // var test = 'https://api.opencagedata.com/geocode/v1/json?q='
+//     //             + city + ',' + countryCode
+//     //             + '&key=f576d3fbe1d84392b909860a541915d0'
 
-    // var testCct='https://api.opencagedata.com/geocode/v1/json?q=' (53.3307169 -6.2737894)
-    // + '53.269604' + '+' + '-9.057529'
-    //         //    + '53.3458917' + '+' + '-6.258813'
-    //            + '&key=f576d3fbe1d84392b909860a541915d0';
-    var url = 'https://api.opencagedata.com/geocode/v1/json?q='
-                + lat + '+' + lon
-                + '&key=f576d3fbe1d84392b909860a541915d0';
-    http.open("GET", url);
-    http.send();
+//     // var testCct='https://api.opencagedata.com/geocode/v1/json?q=' (53.3307169 -6.2737894)
+//     // + '53.269604' + '+' + '-9.057529'
+//     //         //    + '53.3458917' + '+' + '-6.258813'
+//     //            + '&key=f576d3fbe1d84392b909860a541915d0';
+//     var url = 'https://api.opencagedata.com/geocode/v1/json?q='
+//                 + lat + '+' + lon
+//                 + '&key=f576d3fbe1d84392b909860a541915d0';
+//     http.open("GET", url);
+//     http.send();
     
-    http.onreadystatechange = (e) => {
-        var response = http.responseText;
-        var responseJSON = JSON.parse(response);
-        console.log(response);
-        console.log(responseJSON);
+//     http.onreadystatechange = (e) => {
+//         var response = http.responseText;
+//         var responseJSON = JSON.parse(response);
+//         console.log(response);
+//         console.log(responseJSON);
 
         
-        var address = responseJSON.results[0].formatted;
-        document.getElementById('currentCity').innerHTML = address;
+//         var address = responseJSON.results[0].formatted;
+//         document.getElementById('currentCity').innerHTML = address;
         
-    }
-}
+//     }
+// }
 
-function currencyConvert(){
-	var http = new XMLHttpRequest();
-	//var url = 'http://www.apilayer.net/api/live?access_key=2bd7991fcb1e37c5073e35fee8264bef&format=1';
-  var urlUSD = 'https://api.exchangeratesapi.io/latest?base=USD';
+// function currencyConvert(){
+// 	var http = new XMLHttpRequest();
+// 	//var url = 'http://www.apilayer.net/api/live?access_key=2bd7991fcb1e37c5073e35fee8264bef&format=1';
+//   var urlUSD = 'https://api.exchangeratesapi.io/latest?base=USD';
   
-	http.open("GET", urlUSD);
-	http.send();
+// 	http.open("GET", urlUSD);
+// 	http.send();
 
-	http.onreadystatechange = (e) => {
-        var response = http.responseText;
-        var responseJSON = JSON.parse(response);
-        console.log(response);
-        console.log(responseJSON);
+// 	http.onreadystatechange = (e) => {
+//         var response = http.responseText;
+//         var responseJSON = JSON.parse(response);
+//         console.log(response);
+//         console.log(responseJSON);
 
-        var checkCurrency = responseJSON.rates;
-        //console.log(checkCurrency);
-        var count;
-        for (count in checkCurrency){
-            // console.log(count);
-            if (count == localCurrencyGlobal){
-                var localRate = responseJSON.rates.count;
-                console.log(localRate);
-                //document.getElementById('test2').innerHTML = localRate;
-            }
-        }
+//         var checkCurrency = responseJSON.rates;
+//         //console.log(checkCurrency);
+//         var count;
+//         for (count in checkCurrency){
+//             // console.log(count);
+//             if (count == localCurrencyGlobal){
+//                 var localRate = responseJSON.rates.count;
+//                 console.log(localRate);
+//                 //document.getElementById('test2').innerHTML = localRate;
+//             }
+//         }
     
-	}
-}
+// 	}
+// }
