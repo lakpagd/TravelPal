@@ -104,7 +104,6 @@ function getAddress(){
 
         var city = responseJSON.city;
         cityGlobal = city;
-        console.log(cityGlobal);
         var countCode = responseJSON.countryCode.toLowerCase();
         countryCodeGlobal = countCode;
         var currencyLocal = responseJSON.currency;
