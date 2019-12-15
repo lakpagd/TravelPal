@@ -1,3 +1,5 @@
+<body onload="getAddress()">
+
 <!-- Top Navbar-->
 <div class="navbar">
         <div class="navbar-inner">
@@ -17,43 +19,16 @@
         <div data-page="about" class="page">
             <div class="page-content">
                 <div class="content-block">
-                    <!-- <p>Your local currency is <text id="localCurrency"> Currency </text></p> -->
-                    <!-- <button onclick="currencyConvert()"> Convert </button> -->
+                      
+                    
                     <div>
-                        Your local currency is <text id="localCurrency"> Currency </text>
-                    </div>
-                    <!-- <div class="menu">
-                        <div class="menu-inner">
-                            <div class="menu-item menu-item-dropdown">
-                                <div class="menu-item-content">Rates</div>
-                                <div class="menu-dropdown menu-dropdown-center">
-                                    <div class="menu-dropdown-content" style="height: 200px">
-                                        <a href="#" class="menu-dropdown-link menu-close">Menu Item 1</a>
-                                        <a href="#" class="menu-dropdown-link menu-close">Menu Item 2</a>
-                                        <a href="#" class="menu-dropdown-link menu-close">Menu Item 3</a>
-                                        <a href="#" class="menu-dropdown-link menu-close">Menu Item 4</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- <div class="dropdown">
-                        <button class="dropbtn">Dropdown</button>
-                        <div class="dropdown-content">
-                          <a href="#">Link 1</a>
-                          <a href="#">Link 2</a>
-                          <a href="#">Link 3</a>
-                        </div>
-                    </div> -->
-                    <div>
-                        Select a currency: 
-                        <!-- <form id="form1" action="/my-app.js" method="post"> -->
                             <fieldset>
                                 <legend id="localCurrency">Currency</legend>
-                                Enter US Dollar: <input id="usdollar" type="number" name="USD" value="100.00"> </br>
-                                <input type="submit" value="Convert To Local Currency" onclick="currencyConvert()"> </br>
-                                Local Currency: <input id="localCurrency" type="number" name="LocalCurrency"> </br>
+                                Enter US Dollar: <input id="usDollar" type="number" name="USD" value="1.00"> </br>
+                                <input type="submit" value="Convert To" onclick="currencyConvert()"> </br>
+                                <!-- Local Currency: <input id="localCurrency" type="text" name="LocalCurrency"> </br> -->
                                 <!-- <text id="test1"> Output </text> -->
+                                <text id="result"></text> <text id="localCurrency"></text>
                             </fieldset>
                             <!-- <select name="Currency">
                                 <option id="euro" selected> Euro </option>
@@ -70,4 +45,6 @@
             </div>
         </div>
     </div>
-    
+
+
+</body>

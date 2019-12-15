@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body onload="openCageApi()">
+<body onload="getAddress()">
     <!-- Status bar overlay for full screen mode (PhoneGap) -->
     <div class="statusbar-overlay"></div>
 
@@ -77,14 +77,11 @@
                             <!-- <button id="yourLocation" onclick="openCageApi()"> Your Location </button> -->
                             <h3> Your current location is </h3>
                             <div id="currentLocation">
-                                <h2>
-                                    <text id="currentCity"> City </text>,
-                                    <text id="currentCountry"> Country </text>.
-                                </h2>
+                                <h3>
+                                    <text id="city"> City </text>,
+                                    <text id="country"> Country </text>
+                                </h3>
                             </div>
-                            <button onclick="getAddress()">test</button>
-                            <button onclick="test()">test1</button>
-
                             <button onclick="getLocation()"> Show Map </button>
                             <div id="coordinates">
                                 Latitude : <text id="latitude"> latitude </text> </br>
@@ -105,13 +102,18 @@
             <div class="toolbar">
                 <div class="toolbar-inner">
                     <!-- Toolbar links -->
-                    <a href="index.html">Home</a>
-                    <a href="currencyCoverter.html" onclick="openCageApi()">
-                        <!-- <img src="www\lib\framework7\img\money_euro_circle.svg"> -->
-                        Currency Converter
+                    <a href="index.html" onclick="getAddress()">
+                        <img src="https://img.icons8.com/color/48/000000/home.png">
                     </a>
-                    <a href="weather.html" onclick="weatherApi()">Weather</a> </br>
-                    <a href="about.html">About</a>
+                    <a href="currencyCoverter.html" onclick="currencyConvert()">
+                        <img src="https://img.icons8.com/color/48/000000/money-bag.png">
+                    </a>
+                    <a href="weather.html" onclick="weatherApi()">
+                        <img src="https://img.icons8.com/color/48/000000/partly-cloudy-day.png">
+                    </a> </br>
+                    <a href="about.html">
+                        <img src="https://img.icons8.com/office/16/000000/airplane-take-off.png">
+                    </a>
                 </div>
             </div>
         </div>

@@ -55,7 +55,9 @@ function geoCallback(position) {
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
 
+    
     updateMap(lat, lng);
+    // openCageApi(lat, lng);
 }
 
 function initMap() {
@@ -85,7 +87,7 @@ function updateMap(latitude, longitude) {
 
 function getAddress(){
     var http = new XMLHttpRequest();
-    var url = 'http://ip-api.com/json/?fields=lat,lon,city,countryCode,currency'
+    var url = 'http://ip-api.com/json/?fields=lat,lon,city,country,countryCode,currency';
 
     http.open("GET", url);
     http.send();
@@ -96,18 +98,18 @@ function getAddress(){
 
         var lat = responseJSON.lat;
         document.getElementById('latitude').innerHTML = lat;
-            latGlobal = lat;
-        
         var lon = responseJSON.lon;
         document.getElementById('longitude').innerHTML = lon;
-            lonGlobal = lon;
-
         var city = responseJSON.city;
+        document.getElementById('city').innerHTML = city;
         cityGlobal = city;
+        var country = responseJSON.country;
+        document.getElementById('country').innerHTML = country;
         var countCode = responseJSON.countryCode.toLowerCase();
         countryCodeGlobal = countCode;
         var currencyLocal = responseJSON.currency;
-        currencyGlobal = currencyLocal;
+        document.getElementById('localCurrency').innerHTML = currencyLocal;
+        
     }
 }
 
@@ -117,12 +119,83 @@ var cityGlobal = "";
 var countryCodeGlobal = "";
 var currencyGlobal = "";
 
+
+//    var https = require('https');
+
+function currencyConvert() {
+    //var apiKey = '369b1790c4df3611c89b';
+    var fromCurrency = "USD";
+    var toCurrency = "EUR"
+    var query = fromCurrency + '_' + toCurrency;
+    
+    var url = 'https://free.currconv.com/api/v7/convert?q='+query+'&compact=ultra&apiKey=369b1790c4df3611c89b';
+    // var url = 'http://data.fixer.io/api/convert?access_key=f34a9da8ff3a052b9324e95d4828020a&from=USD&to='
+    //             + toCurrency
+    //             + '&amount='
+    //             + amount;
+    var http = new XMLHttpRequest();
+    http.open("GET", url);
+    http.send();
+
+    http.onreadystatechange = (e) => {
+        var response = http.responseText;
+        var responseJSON = JSON.parse(response);
+        // console.log(response);
+        // console.log(responseJSON);
+        
+        var localRate = responseJSON.USD_EUR;
+        var input = document.getElementById('usDollar').value;
+
+        var result = localRate * input;
+        document.getElementById('result').innerHTML = result;
+    }
+}
+
+
+// function currencyConvert(){
+//     var localCurrency = currencyGlobal;
+//     console.log(localCurrency);
+//     var http = new XMLHttpRequest();
+
+//     var url = 'https://data.fixer.io/api/convert?access_key=& from = GBP
+//     & to = JPY
+//     & amount = 25
+
+// 	//var url = 'http://www.apilayer.net/api/live?access_key=2bd7991fcb1e37c5073e35fee8264bef&format=1';
+//     var urlUSD = 'https://api.exchangeratesapi.io/latest?base=USD';
+  
+// 	http.open("GET", urlUSD);
+// 	http.send();
+
+// 	http.onreadystatechange = (e) => {
+//         var response = http.responseText;
+//         var responseJSON = JSON.parse(response);
+//         // console.log(response);
+//         // console.log(responseJSON);
+
+//         var checkCurrency = responseJSON.rates;
+//         //console.log(checkCurrency);
+//         document.getElementById('localCurrency').innerHTML = localCurrency;
+//         var count;
+//         for (count in checkCurrency){
+//             //  console.log(count);
+//             if (count === currency){
+//                 //var localRate = responseJSON.rates.count;
+//                 // console.log(currency);
+//                 //document.getElementById('test2').innerHTML = localRate;
+//             }
+//         }
+    
+// 	}
+// }
+
+
 // Displaying Weather for current location
 function weatherApi(){
     
     var city = cityGlobal;
     var countryCode = countryCodeGlobal;
-    console.log(city);
+    
     var http = new XMLHttpRequest();
     // const url = 'https://api.openweathermap.org/data/2.5/weather?'
     //             + 'lat=' + lat
@@ -164,84 +237,3 @@ function weatherApi(){
         
     }
 }
-
-// function test(){
-//     var lat = latGlobal;
-//     var lng = lonGlobal;
-//     console.log(lat);
-//     console.log(lng);
-// }
-
-function test(){
-    fetch('http://ip-api.com/json/?fields=lat,lon')
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(data){
-                // var lat = data.lat;
-                // var lon = data.lon;
-                openCageApi(data.lat, data.lon);
-            });
-
-}
-
-// Function to pull current city and country from phone's GPS
-// function openCageApi(lat, lon) {    
-    
-//     var http = new XMLHttpRequest();
-//     //var test = 'https://api.opencagedata.com/geocode/v1/json?q=27.659604,85.343806&key=f576d3fbe1d84392b909860a541915d0'
-//     // var test = 'https://api.opencagedata.com/geocode/v1/json?q='
-//     //             + city + ',' + countryCode
-//     //             + '&key=f576d3fbe1d84392b909860a541915d0'
-
-//     // var testCct='https://api.opencagedata.com/geocode/v1/json?q=' (53.3307169 -6.2737894)
-//     // + '53.269604' + '+' + '-9.057529'
-//     //         //    + '53.3458917' + '+' + '-6.258813'
-//     //            + '&key=f576d3fbe1d84392b909860a541915d0';
-//     var url = 'https://api.opencagedata.com/geocode/v1/json?q='
-//                 + lat + '+' + lon
-//                 + '&key=f576d3fbe1d84392b909860a541915d0';
-//     http.open("GET", url);
-//     http.send();
-    
-//     http.onreadystatechange = (e) => {
-//         var response = http.responseText;
-//         var responseJSON = JSON.parse(response);
-//         console.log(response);
-//         console.log(responseJSON);
-
-        
-//         var address = responseJSON.results[0].formatted;
-//         document.getElementById('currentCity').innerHTML = address;
-        
-//     }
-// }
-
-// function currencyConvert(){
-// 	var http = new XMLHttpRequest();
-// 	//var url = 'http://www.apilayer.net/api/live?access_key=2bd7991fcb1e37c5073e35fee8264bef&format=1';
-//   var urlUSD = 'https://api.exchangeratesapi.io/latest?base=USD';
-  
-// 	http.open("GET", urlUSD);
-// 	http.send();
-
-// 	http.onreadystatechange = (e) => {
-//         var response = http.responseText;
-//         var responseJSON = JSON.parse(response);
-//         console.log(response);
-//         console.log(responseJSON);
-
-//         var checkCurrency = responseJSON.rates;
-//         //console.log(checkCurrency);
-//         var count;
-//         for (count in checkCurrency){
-//             // console.log(count);
-//             if (count == localCurrencyGlobal){
-//                 var localRate = responseJSON.rates.count;
-//                 console.log(localRate);
-//                 //document.getElementById('test2').innerHTML = localRate;
-//             }
-//         }
-    
-// 	}
-// }
